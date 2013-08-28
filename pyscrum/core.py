@@ -24,6 +24,7 @@ class Story(object):
         self.tasks = []
         self.tasks.extend(tasks)
 
+    @property
     def points(self):
         """
         Суммарная оценка трудоемкости по всем задачам.
@@ -34,39 +35,47 @@ class Story(object):
         return [t for t in self.tasks
                 if t.state == state]
 
+    @property
     def new_tasks(self):
         return self._filter_tasks_by_state(Task.NEW)
 
+    @property
     def work_tasks(self):
         return self._filter_tasks_by_state(Task.WORK)
 
+    @property
     def done_tasks(self):
         return self._filter_tasks_by_state(Task.DONE)
 
+    @property
     def is_new(self):
         """
         Все задачи истории - новые.
         """
-        return len(self.tasks) == len(self.new_tasks())
+        return len(self.tasks) == len(self.new_tasks)
 
+    @property
     def is_done(self):
         """
         Все задачи выполнены.
         """
         total = len(self.tasks)
-        return total > 0 and total == len(self.done_tasks())
+        return total > 0 and total == len(self.done_tasks)
 
+    @property
     def new_points(self):
         """
         Сумма оценок по новым задачам.
         """
-        return sum(t.points for t in self.new_tasks())
+        return sum(t.points for t in self.new_tasks)
 
+    @property
     def work_points(self):
-        return sum(t.points for t in self.work_tasks())
+        return sum(t.points for t in self.work_tasks)
 
+    @property
     def done_points(self):
-        return sum(t.points for t in self.done_tasks())
+        return sum(t.points for t in self.done_tasks)
 
 
 class Board(object):
@@ -77,21 +86,26 @@ class Board(object):
         self.title = title
         self.stories = stories
 
+    @property
     def new_points(self):
-        return sum(s.new_points() for s in self.stories)
+        return sum(s.new_points for s in self.stories)
 
+    @property
     def work_points(self):
-        return sum(s.work_points() for s in self.stories)
+        return sum(s.work_points for s in self.stories)
 
+    @property
     def done_points(self):
-        return sum(s.done_points() for s in self.stories)
+        return sum(s.done_points for s in self.stories)
 
+    @property
     def points(self):
-        return sum(s.points() for s in self.stories)
+        return sum(s.points for s in self.stories)
 
+    @property
     def progress(self):
-        total = self.points()
+        total = self.points
         if total:
-            return float(self.done_points()) / float(total) * 100
+            return float(self.done_points) / float(total) * 100
         else:
             return 0

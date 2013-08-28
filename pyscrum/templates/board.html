@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
-{% block page_title %}{{ '%2.0f'|format(board.progress()) }}% {{ board.title }}{% endblock %}
+{% block page_title %}{{ '%2.0f'|format(board.progress) }}% {{ board.title }}{% endblock %}
 {% block content %}
-<h1>{{ board.title }}: {{ '%2.0f'|format(board.progress()) }}% ({{ board.done_points() }} из {{ board.points() }} points)</h1>
+<h1>{{ board.title }}: {{ '%2.0f'|format(board.progress) }}% ({{ board.done_points }} из {{ board.points }} points)</h1>
 <table class="table table-hover">
     <thead>
     	<th></th>
-        <th>В планах <span class="badge">{{ board.new_points()|default('', True) }}</span></th>
-        <th>В работе <span class="badge">{{ board.work_points()|default('', True) }}</span></th>
-        <th>Готово <span class="badge">{{ board.done_points()|default('', True) }}</span></th>
+        <th>В планах <span class="badge">{{ board.new_points|default('', True) }}</span></th>
+        <th>В работе <span class="badge">{{ board.work_points|default('', True) }}</span></th>
+        <th>Готово <span class="badge">{{ board.done_points|default('', True) }}</span></th>
     </thead>
     {% for story in board.stories %}
-    <tr{% if story.is_done() %} class="success"{% endif %}>
+    <tr{% if story.is_done %} class="success"{% endif %}>
         <td>{% include 'partial/_storycard.html' %}</td>
         <td>
-        {% for task in story.new_tasks() %}
+        {% for task in story.new_tasks %}
             {% include 'partial/_task.html' %}
         {% endfor %}
         </td>
         <td>
-        {% for task in story.work_tasks() %}
+        {% for task in story.work_tasks %}
             {% include 'partial/_task.html' %}
         {% endfor %}
         </td>
         <td>
-        {% for task in story.done_tasks() %}
+        {% for task in story.done_tasks %}
             {% include 'partial/_task.html' %}
         {% endfor %}
         </td>

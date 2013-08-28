@@ -1,6 +1,6 @@
 <div class="story">
     <h2 class="title">{{ story.title }}
-        <span class="badge">{{ story.points()|default('', True) }}</span>
+        <span class="badge">{{ story.points|default('', True) }}</span>
     </h2>
     <p class="description">{{ story.description }}</p>
 </div>

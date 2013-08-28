@@ -12,17 +12,20 @@ import docutils.nodes
 from pyscrum.core import Task, Story, Board
 
 
-class RstLoader():
+class RstLoader(object):
     """
     Загрузчик историй из .rst-файла.
     """
     def get_board(self, filename):
+        stories = self.parse(open(filename).read().decode('utf-8'))
+        return Board(os.path.basename(filename), stories)
 
+    def parse(self, content):
         settings = OptionParser(components=(Parser, Writer)) \
                    .get_default_values()
-        doc = new_document(os.path.basename(filename), settings)
+        doc = new_document('doc', settings)
         parser = Parser()
-        parser.parse(open(filename).read().decode('utf-8'), doc)
+        parser.parse(content, doc)
 
         stories = []
         for node in doc:
@@ -80,5 +83,13 @@ class RstLoader():
                 description = ''.join(writer.body)
 
                 stories.append(Story(title, description, tasks))
+        return stories
 
-        return Board(filename, stories)
+
+class StringRstLoader(RstLoader):
+    """
+    Загрузчик историй из строки с текстом в формате RST.
+    """
+    def get_board(self, content):
+        stories = self.parse(content)
+        return Board('', stories)
