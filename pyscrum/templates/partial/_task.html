@@ -1,0 +1,7 @@
+<div class="task">
+    <h3>{{ task.title }}</h3>
+    {% if task.person %}
+    <div class="person"><i class="icon-user"></i>&nbsp;{{ task.person }}</div>
+    {% endif %}
+    <span class="badge">{{ task.points|default('', True) }}</span>
+</div>
