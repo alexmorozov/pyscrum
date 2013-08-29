@@ -83,6 +83,7 @@ class RstLoader(object):
                 description = ''.join(writer.body)
 
                 stories.append(Story(title, description, tasks))
+
         return stories
 
 
