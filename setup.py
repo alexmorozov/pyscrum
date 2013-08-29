@@ -13,6 +13,6 @@ setup(name='pyscrum',
       license='GPLv3',
       packages=['pyscrum'],
       install_requires=['docutils', 'jinja2'],
-      scripts=['tools/mkboard.py', 'tools/mkburndown.py']
+      scripts=['tools/mkboard.py', 'tools/mkburndown.py'],
       include_package_data=True,
      )
