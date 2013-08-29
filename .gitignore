@@ -1,4 +1,6 @@
 *.swp
 *.pyc
-MANIFEST
-dist/*
+*.pyo
+*.egg-info
+dist
+build
