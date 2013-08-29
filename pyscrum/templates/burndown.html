@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block page_title %}{{ title }} burndown{% endblock %}
+
+{% block content %}
+  <h1>{{ title }} burndown</h1>
+  <div id="chart" style="width: 70%; height: 700px;"></div>
+{% endblock %}
+
+{% block js %}
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.1/jquery.flot.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          var done = {{ done }};
+          var days = {{ days }};
+          var total = {{ total }};
+
+          dailyBurn = total / days.length;
+          done_points = [];
+          ideal_points = [];
+          days_ticks = [];
+          for (x in days) {
+            done_points.push([x, done[x]]);
+            ideal_points.push([x, parseInt(total - (dailyBurn*x))]);
+            days_ticks.push([x, days[x]]);
+          }
+          $.plot($('#chart'),
+            [{'lines': {'show': 'true', 'lineWidth': 1}, 'points': {'show': 'true'}, 'data': ideal_points, 'label': 'Ideal Burndown'},
+            {'lines': {'show': 'true', 'lineWidth': 4, 'fill': 'true'}, 'points': {'show': 'true'}, 'data': done_points, 'label': 'Actual Burndown'}],
+            {'xaxis': {'ticks': days_ticks}, 'legend': {'position': 'sw'}, 'colors': ['#999999', '#99ff99', '#ff6600']}
+            );
+          });
+      </script>
+{% endblock %}

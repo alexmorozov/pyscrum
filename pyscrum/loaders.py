@@ -91,5 +91,5 @@ class StringRstLoader(RstLoader):
     Загрузчик историй из строки с текстом в формате RST.
     """
     def get_board(self, content):
-        stories = self.parse(content)
+        stories = self.parse(content.decode('utf-8'))
         return Board('', stories)

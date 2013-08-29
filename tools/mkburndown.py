@@ -5,7 +5,11 @@ import sys
 import re
 import os.path
 from datetime import datetime, timedelta
-from commands import getstatusoutput
+import shlex
+import subprocess
+import json
+
+from jinja2 import Environment, PackageLoader
 
 from pyscrum.loaders import StringRstLoader
 
@@ -19,17 +23,45 @@ def guess_dates(filename):
                       'dd.mm.yy-dd.mm.yy'))
 
 
+def points(filename, date):
+    """
+    Получить общее количество пунктов и кол-во выполненных на определенную
+    дату.
+    """
+    cmd = "git show '@{%s}':%s" % (date.strftime('%Y.%m.%d'),
+                                   os.path.basename(filename))
+    args = shlex.split(cmd)
+    p = subprocess.Popen(args, cwd=os.path.dirname(filename),
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (output, err) = p.communicate()
+    if p.returncode != 0:
+        raise Exception('Something gone wrong with git: "%s"' % err)
+    loader = StringRstLoader()
+    board = loader.get_board(output)
+
+    return board.points, board.done_points
+
+
 if __name__ == '__main__':
     filename = sys.argv[1]
     start, end = guess_dates(filename)
     d = start
+    today = datetime.today().date()
+    done, days, total_max = [], [], 0
     while d <= end:
-        cmd = "git show '@{%s}':%s" % (d.strftime('%Y.%m.%d'),
-                                       os.path.basename(filename))
-        retval, output = getstatusoutput(cmd)
-        if retval != 0:
-            raise Exception('Something gone wrong with git: "%s"' % output)
-        loader = StringRstLoader()
-        board = loader.get_board(output)
-        print "%d of %d" % (board.done_points, board.points)
+        if d <= today:
+            total, day_done = points(filename, d)
+            total_max = max(total, total_max)
+            done.append(day_done)
+        days.append(d.strftime('%d.%m'))
         d += timedelta(days=1)
+
+    env = Environment(loader=PackageLoader('pyscrum'))
+    template = env.get_template('burndown.html')
+    context = {
+        'done': json.dumps(done),
+        'total': total_max,
+        'days': json.dumps(days),
+        'title': os.path.basename(filename),
+    }
+    print template.render(**context).encode('utf-8')
