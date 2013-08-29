@@ -32,7 +32,7 @@ class RstLoader(object):
             if isinstance(node, docutils.nodes.section):
                 # Каждая секция - это история
                 if isinstance(node[0], docutils.nodes.title):
-                    title = node.pop(0).astext()
+                    story_title = node.pop(0).astext()
                 else:
                     warnings.warn('Найдена история без заголовка: %r' % node)
                     continue
@@ -61,28 +61,28 @@ class RstLoader(object):
                                           re.UNICODE)
                         if match:
                             person = match.group(1)
-                            title = match.group(2)
+                            task_title = match.group(2)
                             state = Task.WORK
                         else:
-                            title = line
+                            task_title = line
                             person = None
                             state = Task.NEW
 
                         if line.startswith('+'):
                             state = Task.DONE
 
-                        task = Task(title, state, person=person, points=points)
+                        task = Task(task_title, state, person=person, points=points)
                         tasks.append(task)
 
                 # Все остальное в истории - ее описание.
                 writer = Writer()
-                pseudo_doc = new_document(title, settings)
+                pseudo_doc = new_document(story_title, settings)
                 pseudo_doc.children = [node]
                 writer.document = pseudo_doc
                 writer.translate()
                 description = ''.join(writer.body)
 
-                stories.append(Story(title, description, tasks))
+                stories.append(Story(story_title, description, tasks))
 
         return stories
 
