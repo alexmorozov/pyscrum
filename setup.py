@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name='pyscrum',
-      version='0.3',
+      version='0.1',
       description='Generate scrum boards and charts from .rst task logs.',
       long_description=open('README.rst').read(),
       author='Alex Morozov',
@@ -14,4 +14,5 @@ setup(name='pyscrum',
       packages=['pyscrum'],
       install_requires=['docutils', 'jinja2'],
       scripts=['tools/mkboard.py', 'tools/mkburndown.py']
+      include_package_data=True,
      )
