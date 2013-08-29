@@ -45,23 +45,46 @@ def points(filename, date):
 if __name__ == '__main__':
     filename = sys.argv[1]
     start, end = guess_dates(filename)
+
     d = start
     today = datetime.today().date()
-    done, days, total_max = [], [], 0
+    actual, days, total_max = [], [], 0
     while d <= end:
         if d <= today:
-            total, day_done = points(filename, d)
+            total, done = points(filename, d)
             total_max = max(total, total_max)
-            done.append(day_done)
+            actual.append(done)
         days.append(d.strftime('%d.%m'))
         d += timedelta(days=1)
+
+    dailyBurn = float(total_max) / float(len(days))
+    ideal = [(i, int(total_max - (dailyBurn * i)))
+             for i in range(len(days))]
+    # Перевернем график выполненной работы, сделаем - сколько осталось.
+    actual = [total_max - x for x in actual]
+
+    if len(actual) > 1 and len(days) > len(actual):
+        x1, y1 = 0, actual[0]
+        x2, y2 = len(actual) - 1, actual[-1]
+        x3 = len(days) - 1
+        y3 = y1 + ((y2 - y1) / (x2 - x1)) * (x3 - x1)
+        projection = (
+            (len(actual) - 1, actual[-1]),
+            (len(days) - 1, y3)
+        )
+    else:
+        projection = None
+
+    actual = [(i, x) for i, x in enumerate(actual)]
+    days = [(i, x) for i, x in enumerate(days)]
 
     env = Environment(loader=PackageLoader('pyscrum'))
     template = env.get_template('burndown.html')
     context = {
-        'done': json.dumps(done),
-        'total': total_max,
+        'actual': json.dumps(actual),
+        'ideal': json.dumps(ideal),
         'days': json.dumps(days),
         'title': os.path.basename(filename),
+        'projection': json.dumps(projection),
     }
     print template.render(**context).encode('utf-8')
