@@ -1,4 +1,3 @@
 include README.rst
 include LICENSE
-include MAINFEST.in
 recursive-include pyscrum/templates *

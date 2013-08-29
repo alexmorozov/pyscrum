@@ -12,6 +12,6 @@ setup(name='pyscrum',
       url='http://github.com/alexmorozov/pyscrum',
       license='GPLv3',
       packages=['pyscrum'],
-      requires=['docutils', 'jinja2'],
+      install_requires=['docutils', 'jinja2'],
       scripts=['tools/mkboard.py', 'tools/mkburndown.py']
      )
