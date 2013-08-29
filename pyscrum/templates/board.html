@@ -1,29 +1,44 @@
 {% extends 'base.html' %}
 {% block page_title %}{{ '%2.0f'|format(board.progress) }}% {{ board.title }}{% endblock %}
+
+{% block css %}
+<style>
+    .task-row {
+        width: 26%;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <h1>{{ board.title }}: {{ '%2.0f'|format(board.progress) }}% ({{ board.done_points }} из {{ board.points }} points)</h1>
 <table class="table table-hover">
     <thead>
-    	<th></th>
-        <th>В планах <span class="badge">{{ board.new_points|default('', True) }}</span></th>
-        <th>В работе <span class="badge">{{ board.work_points|default('', True) }}</span></th>
-        <th>Готово <span class="badge">{{ board.done_points|default('', True) }}</span></th>
+        <th></th>
+        <th class="task-row">В планах <span class="badge">{{ board.new_points|default('', True) }}</span></th>
+        <th class="task-row">В работе <span class="badge">{{ board.work_points|default('', True) }}</span></th>
+        <th class="task-row">Готово <span class="badge">{{ board.done_points|default('', True) }}</span></th>
     </thead>
     {% for story in board.stories %}
     <tr{% if story.is_done %} class="success"{% endif %}>
-        <td>{% include 'partial/_storycard.html' %}</td>
+        <td>
+            {% set story_index = loop.index %}
+            {% include 'partial/_storycard.html' %}
+        </td>
         <td>
         {% for task in story.new_tasks %}
+            {% set task_status = ' panel-danger' %}
             {% include 'partial/_task.html' %}
         {% endfor %}
         </td>
         <td>
         {% for task in story.work_tasks %}
+            {% set task_status = ' panel-warning' %}
             {% include 'partial/_task.html' %}
         {% endfor %}
         </td>
         <td>
         {% for task in story.done_tasks %}
+            {% set task_status = ' panel-success' %}
             {% include 'partial/_task.html' %}
         {% endfor %}
         </td>

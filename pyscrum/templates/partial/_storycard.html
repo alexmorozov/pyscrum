@@ -1,6 +1,17 @@
-<div class="story">
-    <h2 class="title">{{ story.title }}
-        <span class="badge">{{ story.points|default('', True) }}</span>
-    </h2>
-    <p class="description">{{ story.description }}</p>
+<div class="panel-group story" id="story-{{ story_index }}">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#story-{{ story_index }}" href="#collapse-{{ story_index }}">
+          <span class="glyphicon glyphicon-th-list"></span> {{ story.title }}
+	        <span class="badge">{{ story.points|default('', True) }}</span>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse-{{ story_index }}" class="panel-collapse collapse">
+      <div class="panel-body">
+	      {{ story.description }}
+      </div>
+    </div>
+  </div>
 </div>
