@@ -18,6 +18,6 @@ setup(name='pyscrum',
               'mkboard = pyscrum.tools.mkboard:main',
               'mkburndown = pyscrum.tools.mkburndown:main',
           ]
-      }
+      },
       include_package_data=True,
      )
