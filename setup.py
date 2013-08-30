@@ -19,4 +19,5 @@ setup(name='pyscrum',
               'mkburndown = pyscrum.tools.mkburndown:main',
           ]
       }
+      include_package_data: True,
      )
