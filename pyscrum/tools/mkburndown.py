@@ -42,7 +42,7 @@ def points(filename, date):
     return board.points, board.done_points
 
 
-if __name__ == '__main__':
+def main():
     filename = sys.argv[1]
     start, end = guess_dates(filename)
 
@@ -88,3 +88,7 @@ if __name__ == '__main__':
         'projection': json.dumps(projection),
     }
     print template.render(**context).encode('utf-8')
+
+
+if __name__ == '__main__':
+    main()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #--coding: utf8--
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='pyscrum',
       version='0.1',
@@ -11,8 +11,12 @@ setup(name='pyscrum',
       author_email='inductor2000@mail.ru',
       url='http://github.com/alexmorozov/pyscrum',
       license='GPLv3',
-      packages=['pyscrum'],
+      packages=find_packages(),
       install_requires=['docutils', 'jinja2'],
-      scripts=['tools/mkboard.py', 'tools/mkburndown.py'],
-      include_package_data=True,
+      entry_points={
+          'console_scripts': [
+              'mkboard = pyscrum.tools.mkboard:main',
+              'mkburndown = pyscrum.tools.mkburndown:main',
+          ]
+      }
      )
