@@ -1,10 +1,12 @@
-<div class="task panel{{ task_status }}">
-	<div class="panel-heading">
-		<h3 class="panel-title">
+<li>
+	<span>
+		<div class="status{{ task_status }}"></div>
+		<h4>{{ task.title }}</h4>
+		<p>
 		{% if task.person %}
-			<span class="glyphicon glyphicon-user"></span> {{ task.person }} -
+			<span class="glyphicon glyphicon-user"></span> {{ task.person }}
 		{% endif %}
-		{{ task.title }} <span class="badge">{{ task.points|default('', True) }}</span>
-		</h3>
-  </div>
-</div>
+			<span class="badge">{{ task.points|default('', True) }}</span>
+		</p>
+	</span>
+</li>
