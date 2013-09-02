@@ -47,7 +47,7 @@ class RstLoader(object):
                         # Оценка задачи указывается в круглых скобках в самом
                         # конце, слово "дней" опционально.
                         match = re.search(ur'^.+\((\d+)[^\)]{0,5}\)$', line,
-                                          re.UNICODE)
+                                          re.UNICODE | re.MULTILINE)
                         if match:
                             points = int(match.group(1))
                             line = re.sub(ur'^(.+?)\(\d+[^\)]{0,5}\)$', r'\1',
@@ -58,7 +58,7 @@ class RstLoader(object):
                         # Ответственный указывается перед задачей и отделяется
                         # двоеточием.
                         match = re.search(ur'^\+?([\w]+):\s*(.+)$', line,
-                                          re.UNICODE)
+                                          re.UNICODE | re.MULTILINE)
                         if match:
                             person = match.group(1)
                             task_title = match.group(2)
