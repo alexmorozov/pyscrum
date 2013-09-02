@@ -1,9 +1,9 @@
 Story name
 ----------
-Description: As a user, I want more beer, so that I`ll be always drunk and
+*Description*: As a user, I want more beer, so that I`ll be always drunk and
 happy.
 
-Acceptance criteria: My house is fully packed with beer.
+*Acceptance criteria*: My house is fully packed with beer.
 
 The description is simply a text after the heading. It can containg subheaders,
 lists, and so on.
@@ -21,9 +21,9 @@ treated as a task list.
 
 Название истории
 ----------------
-Как пользователь, я хочу пивка, чтобы всегда быть навеселе.
+*Описание*: Как пользователь, я хочу пивка, чтобы всегда быть навеселе.
 
-Критерий приемки: Мой дом забит пивасом.
+*Критерий приемки*: Мой дом забит пивасом.
 
 Описание задачи - обычный текст после заголовка. В нем могут быть подзаголовки,
 списки и любое другое форматирование.
