@@ -28,10 +28,10 @@ def points(filename, date):
     Получить общее количество пунктов и кол-во выполненных на определенную
     дату.
     """
-    cmd = "git show '@{%s}':%s" % (date.strftime('%Y.%m.%d'),
+    cmd = "git show '@{%s}':./%s" % (date.strftime('%Y.%m.%d'),
                                    os.path.basename(filename))
     args = shlex.split(cmd)
-    p = subprocess.Popen(args, cwd=os.path.dirname(filename),
+    p = subprocess.Popen(args, cwd=os.path.abspath(os.path.dirname(filename)),
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (output, err) = p.communicate()
     if p.returncode != 0:
